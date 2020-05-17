@@ -23,8 +23,8 @@
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" id="dropdown-a" data-toggle="dropdown">Вход</a>
 						<div class="dropdown-menu" aria-labelledby="dropdown-a">
-							<a class="dropdown-item" href="blog.html">Вход</a>
-							<a class="dropdown-item" href="blog-details.html">Регистрация</a>
+							<a class="dropdown-item" href="{{ route('login') }}">Вход</a>
+							<a class="dropdown-item" href="{{ route('') }}">Регистрация</a>
 						</div>
 					</li>
 				</ul>
