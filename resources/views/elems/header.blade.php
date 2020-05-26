@@ -24,7 +24,7 @@
 					@if(auth()->check())
 					<li class="nav-item"><a class="nav-link" href="menu.html">Профиль</a></li>
 					<li class="nav-item"><a class="nav-link" href="menu.html">Корзина</a></li>
-					<li class="nav-item"><a class="nav-link" href="{{ Auth::logout() }}">Выход</a></li>					
+					<li class="nav-item"><a class="nav-link" href="{{ route('home.logout') }}">Выход</a></li>					
 					@else
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" id="dropdown-a" data-toggle="dropdown">Вход</a>

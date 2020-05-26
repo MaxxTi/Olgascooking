@@ -11,8 +11,9 @@
 |
 */
 
-Route::get('/', 'MainPageController@showPage');
+Route::get('/', 'MainPageController@showPage')->name('mainPage.showPage');
 
 Auth::routes(['verify' => true]);
 
+Route::get('/logout', 'HomeController@logout')->name('home.logout');
 Route::get('/home', 'HomeController@index')->name('home')->middleware('verified');

@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 
 class MainPageController extends Controller
 {
-    public function showPage() {
-    	return view('mainPage');
+    public function showPage(Request $request) {
+    	$user = auth()->user();
+    	return view('mainPage', ['user' => $user]);
     }
 }
