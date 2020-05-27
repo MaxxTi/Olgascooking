@@ -17,3 +17,8 @@ Auth::routes(['verify' => true]);
 
 Route::get('/logout', 'HomeController@logout')->name('home.logout');
 Route::get('/home', 'HomeController@index')->name('home')->middleware('verified');
+
+Route::group(['prefix' => 'admin',
+			  'middleware' => ['auth', 'isAdmin']], function() {
+	Route::get('/', 'AdminController@showAdminPage')->name('admin.page');
+});
