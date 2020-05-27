@@ -6,16 +6,26 @@
 
 <div class="container">
 	<div class="row">
-		<div class="card col-12 col-md-4" style="width: 18rem;">
-		  <div class="card-header">
-		    Featured
-		  </div>
-		  <ul class="list-group list-group-flush">
-		    <li class="list-group-item">Cras justo odio</li>
-		    <li class="list-group-item">Dapibus ac facilisis in</li>
-		    <li class="list-group-item">Vestibulum at eros</li>
-		  </ul>
+		
+		<div class="col-xs-12 col-sm-6 col-lg-4">
+			<h3>Раздел меню</h3>
+			<ul class="list-group">
+			  <li class="list-group-item"><a href="{{ route('admin.categories') }}">Категории</a></li>
+			  <li class="list-group-item"><a href="">Продукты</a></li>
+			</ul>
 		</div>
+
+		<div class="col-xs-12 col-sm-6 col-lg-4">
+			<h3>Раздел страницы</h3>
+			<ul class="list-group">
+			  <li class="list-group-item"><a href="">О нас</a></li>
+			  <li class="list-group-item"><a href="">Контакты</a></li>
+			  <li class="list-group-item"><a href="">Блог</a></li>
+			  <li class="list-group-item"><a href="">Галерея</a></li>
+			  <li class="list-group-item"><a href="">Кейтеринг</a></li>
+			</ul>
+		</div>
+
 	</div>
 </div>
 
