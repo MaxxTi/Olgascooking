@@ -65,4 +65,86 @@ class AdminController extends Controller
     	Category::findOrFail($category_id)->delete();
     	return redirect()->route('admin.categories');
     }
+
+    public function showSubcategories($category_id) {
+    	$category = Category::findOrFail($category_id);
+    	$subcategories = $category->subcategories;
+
+    	$breadcrumb = [
+            route('admin.page') => 'Административная панель',
+            route('admin.categories') => 'Категории',
+            $category->name,
+        ];
+
+    	return view('admin.adminSubcategories', ['category' => $category, 'subcategories' => $subcategories, 'breadcrumb' => $breadcrumb]);
+    }
+
+    public function addSubcategory(Request $request, $category_id) {
+    	$category = Category::findOrFail($category_id);
+    	$subcategories = $category->subcategories;
+
+    	$breadcrumb = [
+            route('admin.page') => 'Административная панель',
+            route('admin.categories') => 'Категории',
+            route('admin.subcategories', ['category_id' => $category->id]) => $category->name,
+            'Добавление подкатегории',
+        ];
+
+    	if(!empty($request->subcategory_name)) {
+        	$subcategory = new Subcategory;
+            $subcategory->name = $request->subcategory_name;
+            $subcategory->description = $request->subcategory_description;
+            $subcategory->product_category_id = $category_id;
+            $subcategory->save();
+
+            return redirect(route('admin.subcategories', ['category_id' => $category_id]));
+        }
+
+        return view('admin.addSubcategory', ['category' => $category,'breadcrumb' => $breadcrumb]);
+    }
+
+    public function editSubcategory(Request $request, $subcategory_id) {
+    	$subcategory = Subcategory::findOrFail($subcategory_id);
+    	$category = $subcategory->category;
+
+    	$breadcrumb = [
+            route('admin.page') => 'Административная панель',
+            route('admin.categories') => 'Категории',
+            route('admin.subcategories', ['category_id' => $category->id]) => $category->name,
+            $subcategory->name,
+        ];
+
+        if(!empty($request->subcategory_name)) {
+        	$subcategory->name = $request->subcategory_name;
+        	$subcategory->description = $request->subcategory_description;
+        	$subcategory->save();
+
+        	return redirect(route('admin.subcategories', ['category_id' => $category->id]));
+        }
+
+    	return view('admin.editSubcategory', ['subcategory' => $subcategory, 'breadcrumb' => $breadcrumb]);
+    }
+
+    public function deleteSubcategory($subcategory_id) {
+    	$subcategory = Subcategory::findOrFail($subcategory_id);
+    	$category_id = $subcategory->category->id;
+    	$subcategory->delete();
+
+    	return redirect()->route('admin.subcategories', ['category_id' => $category_id]);
+    }
+
+    public function showSubcategoryProducts($subcategory_id) {
+    	$subcategory = Subcategory::findOrFail($subcategory_id);
+    	$category = $subcategory->category;
+    	$products = [];
+
+    	$breadcrumb = [
+            route('admin.page') => 'Административная панель',
+            route('admin.categories') => 'Категории',
+            route('admin.subcategories', ['category_id' => $category->id]) => $category->name,
+            $subcategory->name,
+        ];
+
+        return view('admin.adminProducts', ['products' => $products, 'subcategory' => $subcategory, 'breadcrumb' => $breadcrumb]);
+    }
 }

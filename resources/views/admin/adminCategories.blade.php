@@ -18,7 +18,7 @@
 			@foreach($categories as $category)
 				<tr>
 					<td>{{ $category->name }}</td>
-					<td><a class="btn btn-default btn-sm" href="category/{{ $category->id }}" role="button">подкатегория</a></td>
+					<td><a class="btn btn-default btn-sm" href="{{ route('admin.subcategories', ['category_id' => $category->id]) }}" role="button">подкатегории</a></td>
 					<td><a class="btn btn-default btn-sm" href="{{ route('admin.edit_category', ['id' => $category->id]) }}" role="button">изменить</a></td>
 					<td><a class="btn btn-default btn-sm" href="{{ route('admin.delete_category', ['id' => $category->id]) }}" role="button">удалить</a></td>
 				</tr>
