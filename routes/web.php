@@ -38,8 +38,19 @@ Route::group(['prefix' => 'admin',
 	// Удаление подкатегории
 	Route::get('delete-subcategory/{id}', 'AdminController@deleteSubcategory')->name('admin.delete_subcategory');
 	// Все подкатегории в категории
-	Route::get('subcategories/{category_id}', 'AdminController@showSubcategories')->name('admin.subcategories');
+	Route::get('subcategories/{category_id}', 'AdminController@showCategory')->name('admin.category');
 
-	// Продукты по подкатегориям
-	Route::get('products/{subcategory_id}', 'AdminController@showSubcategoryProducts')->name('admin.subcategory.products');
+	// Добавление продукта
+	Route::group(['prefix' => 'add-product'], function(){
+		// Добавление продукта в подкатегорию
+		Route::match(['get', 'post'], '{cat_subcat_id?}/subcategory', 'AdminController@addProduct')->name('admin.addProductSubcategory');
+		// Добавление продукта в категорию (без подкатегории)
+		Route::match(['get', 'post'], '{cat_subcat_id?}/category', 'AdminController@addProduct')->name('admin.addProductCategory');
+		// Добавление продукта из админки
+		Route::match(['get', 'post'], '', 'AdminController@addProduct')->name('admin.addProduct');
+	});
+	
+	// Продукты по категориям или подкатегориям
+	Route::get('subcategory/products/{subcategory_id}', 'AdminController@showSubcategoryProducts')->name('admin.subcategory.products');
+	Route::get('category/products/{subcategory_id}', 'AdminController@showCategoryProducts')->name('admin.category.products');
 });

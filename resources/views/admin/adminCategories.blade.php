@@ -18,7 +18,17 @@
 			@foreach($categories as $category)
 				<tr>
 					<td>{{ $category->name }}</td>
-					<td><a class="btn btn-default btn-sm" href="{{ route('admin.subcategories', ['category_id' => $category->id]) }}" role="button">подкатегории</a></td>
+					<td><a class="btn btn-default btn-sm" href="{{ route('admin.category', ['category_id' => $category->id]) }}" role="button">
+
+					@if($category->only_products == 1)
+						<a class="btn btn-default btn-sm" href="{{ route('admin.category.products', ['category_id' => $category->id]) }}" role="button">
+						продукты</a>
+					@else
+						<a class="btn btn-default btn-sm" href="{{ route('admin.category', ['category_id' => $category->id]) }}" role="button">
+						подкатегории</a>
+					@endif
+					
+					</td>
 					<td><a class="btn btn-default btn-sm" href="{{ route('admin.edit_category', ['id' => $category->id]) }}" role="button">изменить</a></td>
 					<td><a class="btn btn-default btn-sm" href="{{ route('admin.delete_category', ['id' => $category->id]) }}" role="button">удалить</a></td>
 				</tr>

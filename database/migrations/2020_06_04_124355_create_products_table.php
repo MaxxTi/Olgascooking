@@ -20,11 +20,9 @@ class CreateProductsTable extends Migration
             $table->string('description');
             $table->string('image_path');
             $table->unsignedInteger('price');
-            $table->unsignedInteger('count_likes');
-            $table->integer('product_category_id')->unsigned();
-            $table->foreign('product_category_id')->references('id')->on('product_category');
-            $table->integer('product_subcategory_id')->unsigned();
-            $table->foreign('product_subcategory_id')->references('id')->on('product_subcategory');
+            $table->unsignedInteger('count_likes')->default(0);
+            $table->integer('cat_sub_id');
+            $table->string('cat_sub_type');
             $table->softDeletes();
             $table->timestamps();
         });

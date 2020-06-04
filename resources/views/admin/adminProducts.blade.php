@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $subcategory->name)
+@section('title', $title)
 
 @section('content')
 
@@ -24,12 +24,12 @@
 			@endforeach
 
 		</table>		
-		
 
 	</div>
 
 	<hr>
-	<a class="btn btn-outline-primary" href="" role="button">Добавить продукт</a>
+
+	<a class="btn btn-outline-primary" href="{{ $link_to_add_product }}" role="button">Добавить продукт</a>
 
 </div>
 

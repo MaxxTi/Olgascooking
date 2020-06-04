@@ -31,7 +31,6 @@
 
 	<hr>
 	<a class="btn btn-outline-primary" href="{{ route('admin.add_subcategory', ['category_id' => $category->id]) }}" role="button">Добавить подкатегорию</a>
-	<a class="btn btn-outline-primary" href="" role="button">Добавить продукт</a>
 
 </div>
 

@@ -11,7 +11,7 @@
 			<h3>Раздел меню</h3>
 			<ul class="list-group">
 			  <li class="list-group-item"><a href="{{ route('admin.categories') }}">Категории</a></li>
-			  <li class="list-group-item"><a href="">Продукты</a></li>
+			  <li class="list-group-item"><a href="{{ route('admin.addProduct') }}">Добавить продукт</a></li>
 			</ul>
 		</div>
 
