@@ -19,7 +19,7 @@
 				<tr>
 					<td>{{ $product->name }}</td>
 					<td><a class="btn btn-default btn-sm" href="" role="button">изменить</a></td>
-					<td><a class="btn btn-default btn-sm" href="" role="button">удалить</a></td>
+					<td><a class="btn btn-default btn-sm" href="{{ route('admin.product.soft_delete_product', ['product_id' => $product->id]) }}" role="button">удалить</a></td>
 				</tr>
 			@endforeach
 
@@ -30,6 +30,7 @@
 	<hr>
 
 	<a class="btn btn-outline-primary" href="{{ $link_to_add_product }}" role="button">Добавить продукт</a>
+	<a class="btn btn-outline-primary" href="{{ $link_to_deleted_products }}" role="button">Удаленные продукты</a>
 
 </div>
 

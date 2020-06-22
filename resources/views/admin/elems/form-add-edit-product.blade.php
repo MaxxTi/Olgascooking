@@ -1,6 +1,6 @@
 <div class="col-xs-12 col-sm-6 col-lg-4">
 
-	<form action="{{ $action }}" method="POST">
+	<form action="{{ $action }}" method="POST" enctype="multipart/form-data">
 
 		{{ csrf_field() }}
 

@@ -28,7 +28,7 @@
 							<li class="nav-item dropdown">
 								<a class="nav-link dropdown-toggle" href="" id="dropdown-a" data-toggle="dropdown">Профиль</a>
 								<div class="dropdown-menu" aria-labelledby="dropdown-a">
-									<a class="dropdown-item" href="{{ route('admin.page') }}">Админ</a>
+									<a class="dropdown-item" href="{{ route('admin.admin.show_admin_page') }}">Админ</a>
 									<a class="dropdown-item" href="stuff.html">Профиль</a>
 								</div>
 							</li>
