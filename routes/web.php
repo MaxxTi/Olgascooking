@@ -46,7 +46,7 @@ Route::group(['prefix' => 'admin',
 		// Восстановление подкатегории
 		Route::get('recover-subcategory/{id}', 'SubcategoryController@recoverSubcategory')->name('admin.subcategory.recover_subcategory');
 		// Полностью удалить подкатегорию
-		
+		Route::get('force-delete/subcategory/{subcategory_id}', 'SubcategoryController@forceDeleteSubcategory')->name('admin.subcategory.force_delete');
 		// удаленные подкатегории
 		Route::get('deleted-subcategories/{category_id}', 'SubcategoryController@showDeletedSubcategories')->name('admin.subcategory.deleted-subcategories');
 
@@ -76,7 +76,7 @@ Route::group(['prefix' => 'admin',
 		// Восстановить продукт
 		Route::get('recover-product/{product_id}', 'ProductController@recoverProduct')->name('admin.product.recover_product');
 		// Полностью удалить продукт
-		Route::get('force-delete/{product_id}', 'ProductController@forceDeleteProduct')->name('admin.product.force_delete');
+		Route::get('force-delete/product/{product_id}', 'ProductController@forceDeleteProduct')->name('admin.product.force_delete');
 		// Удалить все удаленные продукты в категории или подкатегории
 		Route::get('force-delete-products', 'ProductController@forceDeleteProducts')->name('admin.product.force_delete_all');
 	});

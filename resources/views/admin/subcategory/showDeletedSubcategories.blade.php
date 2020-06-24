@@ -20,7 +20,7 @@
 				<tr>
 					<td>{{ $subcategory->name }}</td>
 					<td><a class="btn btn-default btn-sm" href="{{ route('admin.subcategory.recover_subcategory', ['subcategory_id' => $subcategory->id]) }}" role="button">восстановить</a></td>
-					<td><a class="btn btn-default btn-sm" href="" role="button">удалить</a></td>
+					<td><a class="btn btn-default btn-sm" href="{{ route('admin.subcategory.force_delete', ['subcategory_id' => $subcategory->id]) }}" role="button">удалить</a></td>
 				</tr>
 			@endforeach
 

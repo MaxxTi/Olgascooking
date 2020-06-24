@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use App\Category;
 use App\Subcategory;
 use App\Product;
@@ -108,6 +109,48 @@ class SubcategoryController extends Controller
             ->restore();
 
         $category_id = Subcategory::findOrFail($subcategory_id)->category->id;
+
+        return $this->showDeletedSubcategories($category_id);
+    }
+
+    public function forceDeleteSubcategory($subcategory_id) {
+        Subcategory::onlyTrashed()
+            ->where('id', $subcategory_id)
+            ->restore();
+        $subcategory = Subcategory::findOrFail($subcategory_id);
+
+        // Получаем id продуктов из удаленной подкатегории
+        $products_id = Product::onlyTrashed()
+            ->select('id')
+            ->where([
+                ['cat_sub_type', '=',  'subcategory'],
+                ['cat_sub_id', '=', $subcategory_id]
+            ])
+            ->get();
+
+        // Восстанавливаем продукты для дальнейшего удаления изображения и полного удаления продукта
+        Product::onlyTrashed()
+            ->whereIn('id', $products_id)
+            ->restore();
+
+        $products = Product::whereIn('id', $products_id)->get();
+
+        foreach($products as $product) {
+
+            // удаляем картинку если она не дефолтная
+            if($product->image_path != 'storage/productImages/default.jpeg') {
+                preg_match_all('#(productImages/.+)$#', $product->image_path, $matches);
+                $image_path = $matches[1][0];
+                Storage::disk('public')->delete($image_path);
+            }
+
+            // Полностью удаляем продукт
+            $product->forceDelete();    
+        }
+
+        $category_id = Subcategory::findOrFail($subcategory_id)->category->id;
+
+        $subcategory->forceDelete();
 
         return $this->showDeletedSubcategories($category_id);
     }
