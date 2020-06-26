@@ -165,6 +165,15 @@ class CategoryController extends Controller
                 ->get();
             foreach($subcategories as $subcategory) {
                 $subcategory->restore();
+                $products = Product::onlyTrashed()
+                    ->where([
+                        ['cat_sub_type', 'subcategory'],
+                        ['cat_sub_id', $subcategory->id]
+                    ])->get();
+
+                foreach($products as $product) {
+                    $product->restore();
+                }
             }
         }
 
