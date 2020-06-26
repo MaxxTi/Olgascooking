@@ -19,7 +19,7 @@
 				<tr>
 					<td>{{ $category->name }}</td>
 					<td><a class="btn btn-default btn-sm" href="{{ route('admin.category.recover_category', ['category_id' => $category->id]) }}" role="button">восстановить</a></td>
-					<td><a class="btn btn-default btn-sm" href="" role="button">удалить</a></td>
+					<td><a class="btn btn-default btn-sm" href="{{ route('admin.category.force_delete', ['category_id' => $category->id]) }}" role="button">удалить</a></td>
 				</tr>
 			@endforeach
 

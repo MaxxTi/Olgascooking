@@ -179,4 +179,21 @@ class CategoryController extends Controller
 
         return redirect()->to(route('admin.category.deleted_categories'));
     }
+
+    public function forceDeleteCategory($category_id) {
+        Category::onlyTrashed()->where('id', $category_id)->restore();
+        $category = Category::findOrFail($category_id);
+
+        if($category->only_products == 1) {
+            Product::onlyTrashed()
+                ->where([
+                    ['cat_sub_type', 'category'],
+                    ['cat_sub_id', $category_id]
+                ])->forceDelete();
+        }
+
+        $category->forceDelete();
+
+        return redirect()->to(route('admin.category.deleted_categories'));   
+    }
 }

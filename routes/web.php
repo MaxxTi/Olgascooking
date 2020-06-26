@@ -40,6 +40,8 @@ Route::group(['prefix' => 'admin',
 		Route::get('deleted-categories', 'CategoryController@showDeletedCategories')->name('admin.category.deleted_categories');
 		// Восстановление категории с подкатегорими и продуктами
 		Route::get('recover-category/{category_id}', 'CategoryController@recoverCategory')->name('admin.category.recover_category');
+		// Полностью удалить категорию
+		Route::get('force-delete/category/{category_id}', 'CategoryController@forceDeleteCategory')->name('admin.category.force_delete');
 
 			// Добавление подкатегории
 		Route::match(['get', 'post'], 'add-subcategory/{category_id}', 'SubcategoryController@addSubcategory')->name('admin.subcategory.add_subcategory');
