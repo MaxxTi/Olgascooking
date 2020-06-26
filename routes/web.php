@@ -36,6 +36,10 @@ Route::group(['prefix' => 'admin',
 		Route::get('categories', 'CategoryController@showCategories')->name('admin.category.show_categories');
 		// Категория (все подкатегории в категории)
 		Route::get('category/{category_id}', 'CategoryController@showCategory')->name('admin.category.show_category');
+		// Удаленные категории
+		Route::get('deleted-categories', 'CategoryController@showDeletedCategories')->name('admin.category.deleted_categories');
+		// Восстановление категории с подкатегорими и продуктами
+		Route::get('recover-category/{category_id}', 'CategoryController@recoverCategory')->name('admin.category.recover_category');
 
 			// Добавление подкатегории
 		Route::match(['get', 'post'], 'add-subcategory/{category_id}', 'SubcategoryController@addSubcategory')->name('admin.subcategory.add_subcategory');
@@ -43,12 +47,13 @@ Route::group(['prefix' => 'admin',
 		Route::match(['get', 'post'], 'edit-subcategory/{subcategory_id}', 'Subcategorycontroller@editSubcategory')->name('admin.subcategory.edit_subcategory');
 		// Удаление подкатегории
 		Route::get('delete-subcategory/{id}', 'SubcategoryController@deleteSubcategory')->name('admin.subcategory.delete_subcategory');
-		// Восстановление подкатегории
+		// удаленные подкатегории
+		Route::get('deleted-subcategories/{category_id}', 'SubcategoryController@showDeletedSubcategories')->name('admin.subcategory.deleted-subcategories');
+		// Восстановление подкатегории с продуктами
 		Route::get('recover-subcategory/{id}', 'SubcategoryController@recoverSubcategory')->name('admin.subcategory.recover_subcategory');
 		// Полностью удалить подкатегорию
 		Route::get('force-delete/subcategory/{subcategory_id}', 'SubcategoryController@forceDeleteSubcategory')->name('admin.subcategory.force_delete');
-		// удаленные подкатегории
-		Route::get('deleted-subcategories/{category_id}', 'SubcategoryController@showDeletedSubcategories')->name('admin.subcategory.deleted-subcategories');
+		
 
 
 		// Продукты в категории

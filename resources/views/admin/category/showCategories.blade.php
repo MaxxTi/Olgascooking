@@ -41,6 +41,7 @@
 
 	<hr>
 	<a class="btn btn-outline-primary" href="{{ route('admin.category.add_category') }}" role="button">Добавить категорию</a>
+	<a class="btn btn-outline-primary" href="{{ route('admin.category.deleted_categories') }}" role="button">Удаленные категории</a>
 
 </div>
 
