@@ -91,17 +91,38 @@ class CategoryController extends Controller
     	return view('admin.category.editCategory', ['category' => $category, 'breadcrumb' => $breadcrumb]);
     }
 
-    public function deleteCategory($category_id) {        
+    public function deleteCategory($category_id) {
+        $category = Category::find($category_id);
+        $subcategories = $category->subcategories;
         $products = Product::where([
             ['cat_sub_type', 'category'],
             ['cat_sub_id', $category_id]
         ])->get();
 
-        foreach($products as $product) {
-            $product->delete();
+        if(!empty($products)) {
+            foreach($products as $product) {
+                $product->delete();
+            }
         }
 
-        Category::findOrFail($category_id)->delete();
+        if(!empty($subcategories)) {
+
+            foreach($subcategories as $subcategory) {
+                $products = Product::where([
+                    ['cat_sub_type', 'subcategory'],
+                    ['cat_sub_id', $subcategory->id]
+                ])->get();
+
+                foreach($products as $product) {
+                    $product->delete();
+                }
+
+                $subcategory->delete();
+            }
+
+        }
+
+        $category->delete();
 
     	return redirect()->route('admin.category.show_categories');
     }
@@ -139,7 +160,12 @@ class CategoryController extends Controller
         }
 
         if($category->only_products == 0) {
-
+            $subcategories = Subcategory::onlyTrashed()
+                ->where('product_category_id', $category_id)
+                ->get();
+            foreach($subcategories as $subcategory) {
+                $subcategory->restore();
+            }
         }
 
         return redirect()->to(route('admin.category.deleted_categories'));
