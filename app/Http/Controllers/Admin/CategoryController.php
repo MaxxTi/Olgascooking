@@ -147,34 +147,27 @@ class CategoryController extends Controller
         $category = Category::findOrFail($category_id);
 
         if($category->only_products == 1) {
-            $products = Product::onlyTrashed()
+            Product::onlyTrashed()
                 ->where([
                     ['cat_sub_type', 'category'],
                     ['cat_sub_id', $category_id]
-                ])->get();
-
-            foreach($products as $product) {
-                $product->restore();
-            }
-
+                ])->restore();
         }
 
         if($category->only_products == 0) {
             $subcategories = Subcategory::onlyTrashed()
                 ->where('product_category_id', $category_id)
                 ->get();
+
             foreach($subcategories as $subcategory) {
                 $subcategory->restore();
-                $products = Product::onlyTrashed()
+                Product::onlyTrashed()
                     ->where([
                         ['cat_sub_type', 'subcategory'],
                         ['cat_sub_id', $subcategory->id]
-                    ])->get();
-
-                foreach($products as $product) {
-                    $product->restore();
-                }
+                    ])->restore();
             }
+
         }
 
         return redirect()->to(route('admin.category.deleted_categories'));
@@ -185,11 +178,75 @@ class CategoryController extends Controller
         $category = Category::findOrFail($category_id);
 
         if($category->only_products == 1) {
-            Product::onlyTrashed()
+            // Получаем id продуктов из удаленной подкатегории
+            $products_id = Product::onlyTrashed()
+                ->select('id')
                 ->where([
-                    ['cat_sub_type', 'category'],
-                    ['cat_sub_id', $category_id]
-                ])->forceDelete();
+                    ['cat_sub_type', '=',  'category'],
+                    ['cat_sub_id', '=', $category_id]
+                ])
+                ->get();
+
+            // Восстанавливаем продукты для дальнейшего удаления изображения и полного удаления продукта
+            Product::onlyTrashed()
+                ->whereIn('id', $products_id)
+                ->restore();
+
+            $products = Product::whereIn('id', $products_id)->get();
+
+            foreach($products as $product) {
+
+                // удаляем картинку если она не дефолтная
+                if($product->image_path != 'storage/productImages/default.jpeg') {
+                    preg_match_all('#(productImages/.+)$#', $product->image_path, $matches);
+                    $image_path = $matches[1][0];
+                    Storage::disk('public')->delete($image_path);
+                }
+
+                // Полностью удаляем продукт
+                $product->forceDelete();    
+            }
+        }
+
+        if($category->only_products == 0) {
+            $subcategories = Subcategory::onlyTrashed()
+                ->where('product_category_id', $category_id)
+                ->get();
+
+            foreach($subcategories as $subcategory) {
+                $subcategory->restore();
+
+                // Получаем id продуктов из удаленной подкатегории
+                $products_id = Product::onlyTrashed()
+                    ->select('id')
+                    ->where([
+                        ['cat_sub_type', '=',  'subcategory'],
+                        ['cat_sub_id', '=', $subcategory->id]
+                    ])
+                    ->get();
+
+                // Восстанавливаем продукты для дальнейшего удаления изображения и полного удаления продукта
+                Product::onlyTrashed()
+                    ->whereIn('id', $products_id)
+                    ->restore();
+
+                $products = Product::whereIn('id', $products_id)->get();
+
+                foreach($products as $product) {
+
+                    // удаляем картинку если она не дефолтная
+                    if($product->image_path != 'storage/productImages/default.jpeg') {
+                        preg_match_all('#(productImages/.+)$#', $product->image_path, $matches);
+                        $image_path = $matches[1][0];
+                        Storage::disk('public')->delete($image_path);
+                    }
+
+                    // Полностью удаляем продукт
+                    $product->forceDelete();    
+                }
+
+                $subcategory->forceDelete();
+            }
         }
 
         $category->forceDelete();
