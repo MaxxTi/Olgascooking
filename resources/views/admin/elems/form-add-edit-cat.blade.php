@@ -17,6 +17,11 @@
 		<label for="only_products">В категории будут только продукты</label>
 		<input type="checkbox" class="form-check" name="only_products" id="only_productsonly_products" 
 		@if(isset($category))
+
+			@if($notEmptyCategory)
+				disabled
+			@endif
+
 			@if($category->only_products == 1)
 				checked
 			@endif

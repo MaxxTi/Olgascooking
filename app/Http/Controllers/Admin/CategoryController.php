@@ -68,6 +68,13 @@ class CategoryController extends Controller
     public function editCategory(Request $request, $category_id) {
     	$category = Category::findOrFail($category_id);
 
+        // Не активна галочка при выборе "Только продукты" если в категории есть хоть одна подкатегория или один продукт
+        $notEmptyCategory = false;
+
+        if($category->subcategories->count() || $category->products->count()) {
+            $notEmptyCategory = true;
+        }
+
     	$breadcrumb = [
             route('admin.admin.show_admin_page') => 'Административная панель',
             route('admin.category.show_categories') => 'Категории',
@@ -88,7 +95,7 @@ class CategoryController extends Controller
             return redirect(route('admin.category.show_categories'));
         }
 
-    	return view('admin.category.editCategory', ['category' => $category, 'breadcrumb' => $breadcrumb]);
+    	return view('admin.category.editCategory', ['category' => $category, 'notEmptyCategory' => $notEmptyCategory, 'breadcrumb' => $breadcrumb]);
     }
 
     public function deleteCategory($category_id) {
